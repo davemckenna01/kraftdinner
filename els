@@ -1,20 +1,36 @@
 #!/bin/sh
 
+#Temporarily (at least I hope it's temporary) set the
+#Internal Field Seperator (IFS) to new lines only, so 
+#we can handle file and folder names that have spaces
+#in them.
 IFS="
 "
 
-dirContentVerboseRaw=(`ls -al`)
+#Need to capture both verbose ("-l") and basic listings.
+#We need verbose listings to determine whether an object is
+#a directory or not (i.e. drwxr-xr-x)
+dirContentVerbose=(`ls -al`)
 dirContent=(`ls -a`)
 
-#deleting a the first line of output of "ls -al"
-dirContentVerbose=${dirContentVerboseRaw[@]:1:(${#dirContentVerboseRaw[@]}-1)}
+#Want to delete the first line of output of "ls -al",
+#which is usually something like "21 files". After the
+#first follows the listing of directory contents.
 
-lenDirContentVerbose=${#dirContentVerbose[@]}
+#BUT! ... unset is no good for what we need.
+#i.e. >> unset dirContentVerbose[0]
+
+#Since unset doesn't actually reorder the array, or remove the 
+#array slot, we're just going to be lazy and manually remove
+#and add 1's here and there in array indexes to acheive what we need.
+lenDirContentVerbose=$((${#dirContentVerbose[@]}-1))
 lenDirContent=${#dirContent[@]}
 
 dirs=()
 files=()
 dirsAndFiles=()
+types=()
+symbols=()
 
 #For now just print a warning if lengths aren't the same.
 #If this is the case, that means something screwy is up,
@@ -27,31 +43,39 @@ fi
 
 for (( i = 0 ; i < lenDirContent ; i++ ))
 do
-	if [ "${dirContentVerbose[$i]:0:1}" == "d" ]; then
+	if [ "${dirContentVerbose[$i+1]:0:1}" == "d" ]; then
 		echo "dirContent ${dirContent[$i]}"
-		echo "dirContent Verbose ${dirContentVerbose[$i]}"
+		echo "dirContent Verbose ${dirContentVerbose[$i+1]}"
 		echo "it's a dir"
-		dirs+=${dirContent[$i]}
+		dirs[$[${#dirs[@]}+1]]=${dirContent[$i]}
+		#types[$[${#types[@]}+1]]="dir"
+		#symbols[$[${#symbols[@]}+1]]="/"
 	else
 		echo "dirContent ${dirContent[$i]}"
-		echo "dirContentVerbose ${dirContentVerbose[$i]}"
+		echo "dirContentVerbose ${dirContentVerbose[$i+1]}"
 		echo "it's a file"
-		files+=${dirContent[$i]}
+		files[$[${#files[@]}+1]]=${dirContent[$i]}
+		#types[$[${#types[@]}+1]]="file"
+		#symbols[$[${#symbols[@]}+1]]="(F)"
 	fi
 done
 
-echo "============================="
+echo ${#dirs[@]}
+echo ${#files[@]}
+
+dirsAndFiles=(${dirs[@]} ${files[@]})
+echo ${#dirsAndFiles[@]}
+
 
 for (( i = 0 ; i < $lenDirContent ; i++ ))
 do
-	echo ${dirContent[$i]}
-	echo ${dirContentVerbose[$i]}
-	#echo "$(($i+1)) ___ ${dirsAndFiles[$i]}"
+	echo "$(($i+1)) ___ ${symbols[$i]}${dirsAndFiles[$i]}"
 done
 
 
 echo -n "Which dir? : "
 read dir
-echo "You entered: $dir"
-cd ${dirs[($dir-1)]}
+echo "Entering /${dirsAndFiles[($dir-1)]}"
+
+cd ${dirsAndFiles[($dir-1)]}
 
