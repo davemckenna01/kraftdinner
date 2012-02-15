@@ -3,27 +3,55 @@
 IFS="
 "
 
-dirsVerbose=(`ls -al`)
-dirs=(`ls -a`)
+dirContentVerboseRaw=(`ls -al`)
+dirContent=(`ls -a`)
 
 #deleting a the first line of output of "ls -al"
-#unset dirsVerbose[0]
+dirContentVerbose=${dirContentVerboseRaw[@]:1:(${#dirContentVerboseRaw[@]}-1)}
 
-#For now break out of program if these arent' the same.
-#This will mean something screwy is up
-if [ ${#dirs[@]} != ${#dirsVerbose[@]} ]; then
-	exit
+lenDirContentVerbose=${#dirContentVerbose[@]}
+lenDirContent=${#dirContent[@]}
+
+dirs=()
+files=()
+dirsAndFiles=()
+
+#For now just print a warning if lengths aren't the same.
+#If this is the case, that means something screwy is up,
+#like maybe ls behaves differently on different systems?
+echo "length of ls -a = $lenDirContent"
+echo "length of ls -al = $lenDirContentVerbose"
+if [ $lenDirContent != $lenDirContentVerbose ]; then
+	echo "OHH NO! Somethings wrong, and I can't figure out how to break execution..."
 fi
 
-numDirs=${#dirs[@]}
-
-for (( i = 0 ; i < numDirs ; i++ ))
+for (( i = 0 ; i < lenDirContent ; i++ ))
 do
-	echo "$(($i+1)) -- ${dirs[$i]}"
+	if [ "${dirContentVerbose[$i]:0:1}" == "d" ]; then
+		echo "dirContent ${dirContent[$i]}"
+		echo "dirContent Verbose ${dirContentVerbose[$i]}"
+		echo "it's a dir"
+		dirs+=${dirContent[$i]}
+	else
+		echo "dirContent ${dirContent[$i]}"
+		echo "dirContentVerbose ${dirContentVerbose[$i]}"
+		echo "it's a file"
+		files+=${dirContent[$i]}
+	fi
 done
+
+echo "============================="
+
+for (( i = 0 ; i < $lenDirContent ; i++ ))
+do
+	echo ${dirContent[$i]}
+	echo ${dirContentVerbose[$i]}
+	#echo "$(($i+1)) ___ ${dirsAndFiles[$i]}"
+done
+
 
 echo -n "Which dir? : "
 read dir
 echo "You entered: $dir"
-cd ${dirs[(($dir-1))]}
+cd ${dirs[($dir-1)]}
 
