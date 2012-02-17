@@ -3,7 +3,7 @@
 ###Usage:
 
 /var/log/apache2 $: lsd
-**1) /03jul11**
+**1) /03jul11**\n
 **2) /04jul11**
 **3) /05jul11**
 **4) /06jul11**
@@ -14,9 +14,6 @@ may11.tar.gz
 **Which dir? 2**
 /var/log/apache2/04jul11 $:
 
-
 ###Installation
 
 > sh install.sh
-
-And you're done
