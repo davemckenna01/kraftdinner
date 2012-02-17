@@ -1,5 +1,9 @@
 ##lsd - Trippy ls
 
+###Installation
+
+> sh install.sh
+
 ###Usage:
 
 /var/log/apache2 $: lsd
@@ -13,7 +17,3 @@ jun11.tar.gz
 may11.tar.gz
 **Which dir? 2**
 /var/log/apache2/04jul11 $:
-
-###Installation
-
-> sh install.sh
