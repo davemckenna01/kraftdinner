@@ -10,4 +10,4 @@ echo "Done."
 
 echo "You're all set up."
 echo "But note that els won't be runnable in already open terminals."
-echo "To use, Type \"els\" to navigate around the filesystem better. It's like \"ls\" but easier."
+echo "To use, type \"els\" to navigate around the filesystem better. It's like \"ls\" but easier."

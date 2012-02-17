@@ -56,11 +56,13 @@ if [ $lenDirContent -gt 2 ]; then
     fi
   done
 
-  echo -n "Which dir? "
-  read dir
-  echo -ne "\033[1m"
-  echo -e "Entering /${dirsAndFiles[($dir-1+2)]}\033[0m"
-
-  cd ${dirsAndFiles[($dir-1+2)]}
-
+  #Only bother showing dir entry prompt if there are
+  #actually dirs to enter.
+  if [ ${#dirs[@]} -gt 2 ]; then
+    echo -n "Which dir? "
+    read dir
+    echo -ne "\033[1m"
+    echo -e "Entering /${dirsAndFiles[($dir-1+2)]}\033[0m"
+    cd ${dirsAndFiles[($dir-1+2)]}
+  fi
 fi
