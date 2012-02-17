@@ -7,7 +7,8 @@
 ###Usage:
 
 /var/log/apache2 $: lsd
-**1) /03jul11**\n
+**1) /03jul11**
+
 **2) /04jul11**
 **3) /05jul11**
 **4) /06jul11**
