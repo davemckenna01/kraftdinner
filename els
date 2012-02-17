@@ -7,9 +7,13 @@
 IFS="
 "
 
-#TODO Before running ls we need to check permissions and if it requires a sudo
-#then we prepend sudo.
-dirContent=(`ls -a`)
+#Check if dir is readable by you.
+if [ -r "./" ]; then
+  dirContent=(`ls -a`)
+else
+  #if not then we'll sudo in.
+  dirContent=(`sudo ls -a`)
+fi
 
 lenDirContent=${#dirContent[@]}
 
@@ -17,12 +21,9 @@ dirs=()
 files=()
 dirsAndFiles=()
 
-echo "length of ls -a = $lenDirContent"
-
 for (( i = 0 ; i < lenDirContent ; i++ ))
 do
 	if [ -d "./${dirContent[$i]}" ]; then
-    #TODO Need to check if it's a symlink to a folder
 		#echo "dirContent ${dirContent[$i]}"
 		#echo "it's a dir"
 		dirs[$[${#dirs[@]}+1]]=${dirContent[$i]}
@@ -35,30 +36,31 @@ done
 
 dirsAndFiles=(${dirs[@]} ${files[@]})
 
-#TODO Need to check if there's only "." and ".." in the dir.
-#That means there's actually no folders, so we should just
-#exit the program.
+#We only want to do stuff if > 2, b/c if there's 2,
+#that means it's just "." and ".."
+if [ $lenDirContent -gt 2 ]; then
 
-#Start at 2 so that we bypass "." and ".."
-for (( i = 2 ; i < $lenDirContent ; i++ ))
-do
-  if [ $i -lt ${#dirs[@]} ]; then
-    echo -ne "\033[1m"
-    echo -n "$(($i+1 - 2))) "
-    echo -n "/"
-    echo -e "${dirsAndFiles[$i]}\033[0m"
-  else
-    echo -ne "\033[2m"
-    #echo -n "$(($i+1 - 2))) "
-    #echo -n "F "
-    echo -e "${dirsAndFiles[$i]}\033[0m"
- fi
-done
+  #Start at 2 so that we bypass "." and ".."
+  for (( i = 2 ; i < $lenDirContent ; i++ ))
+  do
+    if [ $i -lt ${#dirs[@]} ]; then
+      echo -ne "\033[1m"
+      echo -n "$(($i+1 - 2))) "
+      echo -n "/"
+      echo -e "${dirsAndFiles[$i]}\033[0m"
+    else
+      echo -ne "\033[2m"
+      #echo -n "$(($i+1 - 2))) "
+      #echo -n "F "
+      echo -e "${dirsAndFiles[$i]}\033[0m"
+    fi
+  done
 
-echo -n "Which dir? "
-read dir
-echo -ne "\033[1m"
-echo -e "Entering /${dirsAndFiles[($dir-1+2)]}\033[0m"
+  echo -n "Which dir? "
+  read dir
+  echo -ne "\033[1m"
+  echo -e "Entering /${dirsAndFiles[($dir-1+2)]}\033[0m"
 
-#TODO sudo cd doesn't seem to work
-cd ${dirsAndFiles[($dir-1+2)]}
+  cd ${dirsAndFiles[($dir-1+2)]}
+
+fi
