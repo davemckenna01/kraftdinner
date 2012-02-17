@@ -59,7 +59,7 @@ if [ $lenDirContent -gt 2 ]; then
   #Only bother showing dir entry prompt if there are
   #actually dirs to enter.
   if [ ${#dirs[@]} -gt 2 ]; then
-    echo -n "Which dir? "
+    echo -n "Which dir? > "
     read dir
     #TODO validate input
     echo -ne "\033[1m"
