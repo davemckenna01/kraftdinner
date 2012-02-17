@@ -1,4 +1,4 @@
-##lsd - Trippy ls
+##kd - Like ls but easy as Kraft Dinner
 
 ###Installation
 
@@ -6,7 +6,7 @@
 
 ###Usage:
 
-/var/log/apache2 $: lsd  
+/var/log/apache2 $: kd  
 **1) /03jul11**  
 **2) /04jul11**  
 **3) /05jul11**  
