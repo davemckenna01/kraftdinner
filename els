@@ -7,67 +7,39 @@
 IFS="
 "
 
-#Need to capture both verbose ("-l") and basic listings.
-#We need verbose listings to determine whether an object is
-#a directory or not (i.e. drwxr-xr-x)
-
 #TODO Before running ls we need to check permissions and if it requires a sudo
 #then we prepend sudo.
-dirContentVerbose=(`ls -al`)
 dirContent=(`ls -a`)
 
-#Want to delete the first line of output of "ls -al",
-#which is usually something like "21 files". After the
-#first follows the listing of directory contents.
-
-#BUT! ... unset is no good for what we need.
-#i.e. >> unset dirContentVerbose[0]
-
-#Since unset doesn't actually reorder the array, or remove the 
-#array slot, we're just going to be lazy and manually remove
-#and add 1's here and there in array indexes to acheive what we need.
-lenDirContentVerbose=$((${#dirContentVerbose[@]}-1))
 lenDirContent=${#dirContent[@]}
 
 dirs=()
 files=()
 dirsAndFiles=()
 
-#For now just print a warning if lengths aren't the same.
-#If this is the case, that means something screwy is up,
-#like maybe ls behaves differently on different systems?
 echo "length of ls -a = $lenDirContent"
-echo "length of ls -al = $lenDirContentVerbose"
-if [ $lenDirContent != $lenDirContentVerbose ]; then
-	echo "OHH NO! Somethings wrong, and I can't figure out how to break execution..."
-fi
 
 for (( i = 0 ; i < lenDirContent ; i++ ))
 do
-	if [ "${dirContentVerbose[$i+1]:0:1}" == "d" ]; then
+	if [ -d "./${dirContent[$i]}" ]; then
     #TODO Need to check if it's a symlink to a folder
-		echo "dirContent ${dirContent[$i]}"
-		echo "dirContent Verbose ${dirContentVerbose[$i+1]}"
-		echo "it's a dir"
+		#echo "dirContent ${dirContent[$i]}"
+		#echo "it's a dir"
 		dirs[$[${#dirs[@]}+1]]=${dirContent[$i]}
 	else
-		echo "dirContent ${dirContent[$i]}"
-		echo "dirContentVerbose ${dirContentVerbose[$i+1]}"
-		echo "it's a file"
+		#echo "dirContent ${dirContent[$i]}"
+		#echo "it's a file"
 		files[$[${#files[@]}+1]]=${dirContent[$i]}
 	fi
 done
 
-echo ${#dirs[@]}
-echo ${#files[@]}
-
 dirsAndFiles=(${dirs[@]} ${files[@]})
-echo ${#dirsAndFiles[@]}
 
-#Start at 2 so that we bypass "." and ".."
 #TODO Need to check if there's only "." and ".." in the dir.
 #That means there's actually no folders, so we should just
 #exit the program.
+
+#Start at 2 so that we bypass "." and ".."
 for (( i = 2 ; i < $lenDirContent ; i++ ))
 do
   if [ $i -lt ${#dirs[@]} ]; then
@@ -83,7 +55,6 @@ do
  fi
 done
 
-
 echo -n "Which dir? "
 read dir
 echo -ne "\033[1m"
@@ -91,4 +62,3 @@ echo -e "Entering /${dirsAndFiles[($dir-1+2)]}\033[0m"
 
 #TODO sudo cd doesn't seem to work
 cd ${dirsAndFiles[($dir-1+2)]}
-
