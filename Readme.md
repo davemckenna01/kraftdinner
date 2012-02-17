@@ -1,16 +1,16 @@
-#lsd - Trippy ls
+##lsd - Trippy ls
 
-##Usage:
+###Usage:
 
 /var/log/apache2$: lsd
-_1) /03jul11_
-_2) /04jul11_
-_3) /05jul11_
-_4) /06jul11_
-_5) /07jul11_
-.DS_Store
+*1) /03jul11*
+*2) /04jul11*
+*3) /05jul11*
+*4) /06jul11*
+*5) /07jul11*
+.DS*Store
 jun11.tar.gz
 may11.tar.gz
-_Which dir? 2_
+*Which dir? 2*
 /var/log/apache2/04jul11$:
 
