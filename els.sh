@@ -61,6 +61,7 @@ if [ $lenDirContent -gt 2 ]; then
   if [ ${#dirs[@]} -gt 2 ]; then
     echo -n "Which dir? "
     read dir
+    #TODO validate input
     echo -ne "\033[1m"
     echo -e "Entering /${dirsAndFiles[($dir-1+2)]}\033[0m"
     cd ${dirsAndFiles[($dir-1+2)]}
