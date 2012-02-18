@@ -1,4 +1,4 @@
-##kd - Like ls but easy as Kraft Dinner
+##Like ls and cd but easy as Kraft Dinner
 
 ###Installation
 
