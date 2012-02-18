@@ -5,6 +5,7 @@ sudo cp kd.sh /usr/local/bin/kd.sh
 
 #add alias to user's .bash_profile file for convenience
 echo alias kd=\". kd.sh\" >> ~/.bash_profile
+echo alias kd=\". kd.sh\" >> ~/.bashrc
 
 echo "Done."
 
