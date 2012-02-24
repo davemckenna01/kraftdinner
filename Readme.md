@@ -16,4 +16,4 @@
 jun11.tar.gz  
 may11.tar.gz  
 **Which dir? > 2**  
-/var/log/apache2/04jul11 $:
+/var/log/apache2/11jul04 $:
