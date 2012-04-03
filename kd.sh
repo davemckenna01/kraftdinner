@@ -7,12 +7,22 @@
 IFS="
 "
 
+#Check if we get an arg for dir to work with
+if [ -d "$1" ]; then
+  targetDir="$1"
+  if [ ${targetDir:(-1)} != "/" ]; then
+    targetDir="$targetDir/"
+  fi
+else
+  targetDir="./"
+fi
+
 #Check if dir is readable by you.
-if [ -r "./" ]; then
-  dirContent=(`ls -a`)
+if [ -r $targetDir ]; then
+  dirContent=(`ls -a $targetDir`)
 else
   #if not then we'll sudo in.
-  dirContent=(`sudo ls -a`)
+  dirContent=(`sudo ls -a $targetDir`)
 fi
 
 lenDirContent=${#dirContent[@]}
@@ -23,14 +33,14 @@ dirsAndFiles=()
 
 for (( i = 0 ; i < lenDirContent ; i++ ))
 do
-	if [ -d "./${dirContent[$i]}" ]; then
-		#echo "dirContent ${dirContent[$i]}"
+	if [ -d "$targetDir${dirContent[$i]}" ]; then
+		#echo "dirContent $targetDir${dirContent[$i]}"
 		#echo "it's a dir"
-		dirs[$[${#dirs[@]}+1]]=${dirContent[$i]}
+		dirs[$[${#dirs[@]}+1]]=$targetDir${dirContent[$i]}
 	else
-		#echo "dirContent ${dirContent[$i]}"
+		#echo "dirContent $targetDir${dirContent[$i]}"
 		#echo "it's a file"
-		files[$[${#files[@]}+1]]=${dirContent[$i]}
+		files[$[${#files[@]}+1]]=$targetDir${dirContent[$i]}
 	fi
 done
 
@@ -46,8 +56,7 @@ if [ $lenDirContent -gt 2 ]; then
     if [ $i -lt ${#dirs[@]} ]; then
       echo -ne "\033[1m"
       echo -n "$(($i+1 - 2))) "
-      echo -n "/"
-      echo -e "${dirsAndFiles[$i]}\033[0m"
+      echo -e "${dirsAndFiles[$i]}/\033[0m"
     else
       echo -ne "\033[2m"
       #echo -n "$(($i+1 - 2))) "
@@ -63,7 +72,7 @@ if [ $lenDirContent -gt 2 ]; then
     read dir
     #TODO validate input
     echo -ne "\033[1m"
-    echo -e "Entering /${dirsAndFiles[($dir-1+2)]}\033[0m"
+    echo -e "Entering ${dirsAndFiles[($dir-1+2)]}/\033[0m"
     cd ${dirsAndFiles[($dir-1+2)]}
   fi
 fi
