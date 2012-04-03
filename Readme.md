@@ -1,6 +1,4 @@
-##Like ls and cd but easy as Kraft Dinner\*
-
-\* or "Kraft Macaroni and Cheese" if you're American.
+##Like ls and cd but easy as Kraft Dinner
 
 ###Installation
 
