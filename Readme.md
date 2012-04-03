@@ -1,4 +1,6 @@
-##Like ls and cd but easy as Kraft Dinner
+##Like ls and cd but easy as Kraft Dinner\*
+
+\* or "Kraft Macaroni and Cheese" if you're American.
 
 ###Installation
 
@@ -17,3 +19,4 @@ jun11.tar.gz
 may11.tar.gz  
 **Which dir? > 2**  
 /var/log/apache2/11jul04 $:
+
