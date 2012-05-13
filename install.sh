@@ -4,7 +4,7 @@ echo "Installing... "
 sudo cp kd.sh /usr/local/bin/kd.sh
 
 #add alias to user's .bashrc file for convenience
-echo alias kd=\". kd.sh\" >> ~/.bashrc
+echo alias kd=\"source kd.sh\" >> ~/.bashrc
 
 echo "Done."
 
